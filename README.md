@@ -1,0 +1,2 @@
+# it2prosjekt2
+SIMULERINGSPROSJEKT
