@@ -1,0 +1,5 @@
+digraph "classes" {
+charset="utf-8"
+rankdir=BT
+"0" [label="{Partikkel|dt : float\lg : float\lmass : int\lmomentum_x : int\lmomentum_y : int\lx\ly\l|fysk(pos_cmass)\lfysk2(pos_cmass)\l}", shape="record"];
+}
