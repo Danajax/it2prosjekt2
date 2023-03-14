@@ -18,7 +18,7 @@ button2 = pygame.Rect(550, 450, 250, 120)
 
 def mainprog():
     while True:
-        screen.fill('pink')
+        screen.fill('red')
         screen.blit(head, (125, 300))
         for events in pygame.event.get():
             if events.type == pygame.QUIT:
