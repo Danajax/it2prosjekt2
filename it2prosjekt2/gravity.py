@@ -14,7 +14,7 @@ C_Y = HOYD // 2
 #fysikk konst 
 G = 0.2
 M = 10e7
-M2 = 10e9
+M2 = 10e8
 
 #farger
 BLACK = (0, 0, 0)
@@ -35,9 +35,9 @@ class Partikkel:
         self.x = x
         self.y = y
         #self.momentum_x = 200
-        #self.momentum_y = 200
-        self.momentum_x = 200 #kan eksperimenteres med og eventuelt bruke events/ bruker input for å justere momentumet
-        self.momentum_y = -200 #per nå må det hardkodes
+        #self.momentum_y = -200
+        self.momentum_x = 0 #kan eksperimenteres med og eventuelt bruke events/ bruker input for å justere momentumet
+        self.momentum_y = 0 #per nå må det hardkodes
         self.dt = 0.001
 
     def fysk(self, pos_cmass):
@@ -78,10 +78,10 @@ r = 100 #radius til sirkel-funksjonen
 
 
 #lager ulike mønstre for de ulike partiklene
-def linje():
+def linje(mx, my):
     for i in range(1000):
-        x = randrange(-500, 1000)
-        y = 100
+        x = randrange(-500 + mx, mx + 1000)
+        y = my
         p = Partikkel(x, y)
         Partikkels.append(p)
 
@@ -98,10 +98,10 @@ def sirkel(mxx, myy):
         Partikkels.append(p)
 
 
-def firkant():
+def firkant(mx, my):
     for i in range(1000):
-        x = randrange(400, 700)
-        y = randrange(700, 1000)
+        x = randrange(mx, mx + 200)
+        y = randrange(my, my + 200)
         p = Partikkel(x, y)
         Partikkels.append(p)
 
@@ -114,15 +114,19 @@ def draw2():
      for i in range(len(Partikkels)):
         pygame.draw.circle(gamedisp, WHITE, (Partikkels[i].fysk((C_X, C_Y))), 1)
 
+
+
 #mainfunksjon for programmet
 def main2():
     running = True
+    restrt = False
     while running:
         mx, my = pygame.mouse.get_pos()
         pressed = pygame.key.get_pressed()
         staticpoint = False
         right_clicking = False
         gamedisp.fill(BLACK)
+        keys = pygame.key.get_pressed() 
         
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -135,15 +139,36 @@ def main2():
                     staticpoint = True
             if event.type == KEYDOWN:
                 if event.key == K_l:
-                    linje()
+                    linje(mx, my)
                 if event.key == K_f:
-                    firkant()
+                    firkant(mx, my)
                     
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_r:
+                    Partikkels.clear()
+                if event.key == pygame.K_DOWN:
+                    for l in Partikkels:
+                        l.momentum_y += 100
+                if event.key == pygame.K_RIGHT:
+                    for l in Partikkels:
+                        l.momentum_x += 100
+                if event.key == pygame.K_LEFT:
+                    for l in Partikkels:
+                        l.momentum_x += -100
+                if event.key == pygame.K_UP:
+                    for l in Partikkels:
+                        l.momentum_y += -100
+                if event.key == pygame.K_a:
+                    for l in Partikkels:
+                        l.dt *= 10
+                if event.key == pygame.K_d:
+                    for l in Partikkels:
+                        l.dt /= 10
+                        
+            if keys[pygame.K_g]:
+                staticpoint = True
                 
-            #if event.type == MOUSEBUTTONUP:
-                #if event.button == 1:
-
-                #if event.button == 3:
+            
                 
 
         if staticpoint == False:
@@ -151,19 +176,18 @@ def main2():
             central_mass = pygame.draw.circle(gamedisp, RED, (mx, my), r0)
         else:
             draw(mx, my)
-        
         central_mass = pygame.draw.circle(gamedisp, WHITE, CENTER, r0)
     
-
-        # Gravity point
-        #central_mass = pygame.draw.circle(gamedisp, WHITE, CENTER, r0)
-
-        #draw(mx, my)
         draw2()
 
         pygame.display.update()
         
-    pygame.quit()
+            
+    pygame.display.quit()
+    return restrt
 
+    
+
+    
     
 #main2()
